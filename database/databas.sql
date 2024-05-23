@@ -1,5 +1,5 @@
 create database db_acme_filmes_turma_ba;
-use db_acme_filmes_turma_ba;
+tbl_filme_generouse db_acme_filmes_turma_ba;
 
 create table tbl_classificacao (
 id int not null auto_increment primary key,
@@ -22,6 +22,7 @@ insert into tbl_classificacao(
         );
         
         select * from tbl_classificacao where  classificacao LIKE "Li%";
+      
         
         insert into tbl_classificacao(
             sigla,
@@ -110,6 +111,11 @@ genero varchar(45) not null,
 unique key (id)
 );
 
+insert into tbl_genero (genero) values
+("romance"),
+("ficção científica"),
+("aventura");
+
 update tbl_genero set
             genero =  'Romance'
             where tbl_genero.id = 1;
@@ -138,6 +144,8 @@ unique index (id)
 
 alter table tbl_ator 
 	modify column img varchar(200) not null;
+    
+    
     
 select * from tbl_filme;
 insert into tbl_ator (nome, nome_artistico, data_nascimento, data_falecimento, biografia, img, sexo_id)values
@@ -172,12 +180,12 @@ select * from tbl_diretor;
 
 insert into tbl_diretor (nome, data_nascimento, data_falecimento, biografia, img, sexo_id)values
 (
-'Ricardo',
-'2006-12-21',
+'JUlia ',
+'2007-05-16',
 null,
-'lalalalalalallalala',
+'linda',
 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
-2
+1
 );
 
 update tbl_filme set
@@ -199,18 +207,6 @@ alter table tbl_diretor
          on tna.ator_id = ta.id and  tn.id = tna.nacionalidade_id where ta.id = 2;
          
          
-		insert into tbl_filme ( nome, sinopse, duracao, data_lancamento, data_relancamento, foto_capa, valor_unitario, id_classificacao
-                            ) values (
-                                replace("${dadosFilme.nome}","'","#"),
-                                replace("${dadosFilme.sinopse}", "'", "#"),
-                                '${dadosFilme.duracao}',
-                                '${dadosFilme.data_lancamento}',
-                                '${dadosFilme.data_relancamento}',
-                                '${dadosFilme.foto_capa}',
-                                '${dadosFilme.valor_unitario}',
-                                '${dadosFilme.id_classificacao}'
-                            );
-         
          
          select * from tbl_nacionalidade_diretor;
 
@@ -229,6 +225,15 @@ unique key (id),
 unique index(id)
 
 );
+
+select * from tbl_diretor;
+select * from tbl_filme_ator;
+
+insert into tbl_filme_diretor (filme_id, diretor_id) values
+(8,3),
+(8,8);
+
+
 
 create table tbl_filme_ator(
 id int primary key not null auto_increment,
@@ -324,13 +329,39 @@ unique index (id)
 
 );
 
+select * from tbl_filme_genero;
+
+delete from tbl_filme_genero where id = 9;
+
+
+
+insert into tbl_filme_genero (genero_id, filme_id)values
+(4,1),
+(2,6),
+(3,6);
+
+delete genero_id from tbl_filme_genero;
+
 select tg.id,genero from tbl_genero as tg join tbl_filme as tf join tbl_filme_genero as tfg
          on tfg.filme_id = tf.id and  tg.id = tfg.genero_id where tf.id = 1;
          
-         select tn.nacionalidade from tbl_nacionalidade as tn join tbl_ator as ta join tbl_nacionalidade_ator as tna
-         on tna.ator_id = ta.id and  tn.id = tna.nacionalidade_id where ta.nome = 'Wagner Moura';
+         select td. id, nome, data_nascimento, data_falecimento, biografia, img, sexo_id from tbl_diretor as td join tbl_filme as tf join tbl_filme_diretor as tfd
+         on tfd.diretor_id = td.id and  tf.id = tfd.filme_id where tf.id = '1';
+         
+         
+         SELECT
+    ta.nome, ta.nome_artistico, ta.data_nascimento, ta.data_falecimento, ta.biografia, ta.img, ta.sexo_id
+FROM
+    tbl_ator AS ta
+JOIN
+    tbl_filme_ator AS tfa ON tfa.ator_id = ta.id
+JOIN
+    tbl_filme AS tf ON tf.id = tfa.filme_id
+WHERE
+    tf.id = '6';
 
-
+select * from tbl_filme;
+select * from tbl_genero;
 show tables;
 
 
